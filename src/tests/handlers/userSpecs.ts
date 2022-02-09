@@ -44,15 +44,29 @@ describe('Testing /user endpoints', () => {
         const response = await request.get('/users')
         .set('Authorization', 'bearer' + token);
         expect(response.status).toBe(200);
-
-        console.log('Response status: ', response.status);
     });
 
-    
+    it ('GET to /users/1 should respond with 200 OK', async () => {
+        const response = await request.get('/users/1')
+        .set('Authorization', `bearer ${token}`);
+        expect(response.status).toEqual(200);
+    });
 
-    xit ('GET to /users without valid credentials should respond with 401 Forbidden', async() => {
+    it ('GET to /users without valid credentials should respond with 401 Forbidden', async() => {
         const response = await request.get('/users');
         expect(response.status).toBe(401);
+    });
+
+    it('DELETE to /users/1 should respond with 200 OK', async() => {
+        const response = await request.delete('/users/1')
+        .set('Authorization', `bearer ${token}`);
+        expect(response.status).toBe(200);
+    });
+
+    it('PUT to /users/1 should respond with 200 OK', async () => {
+        const response = await request.put('/users/1')
+        .set('Authorization', `bearer ${token}`);
+        expect(response.status).toBe(200);
     });
 })
 

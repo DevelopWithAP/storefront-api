@@ -25,7 +25,7 @@ const show = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
-const create = async (req: Request, res: Response): Promise<void> => {
+const create = async (_req: Request, res: Response): Promise<void> => {
     const user: User = {
         firstName: 'Store',
         lastName: 'Dev',
