@@ -7,7 +7,8 @@ const store = new ProductStore();
 
 const index = async (_req: Request, res: Response): Promise<void> => {
     try {
-        res.json(await store.index());
+        const products: Product[] = await store.index();
+        res.json(products);
     } catch (error) {
         res.status(400);
         res.json(error);
@@ -16,7 +17,7 @@ const index = async (_req: Request, res: Response): Promise<void> => {
 
 const show = async (req: Request, res: Response): Promise<void> => {
     try {
-        res.json(await store.show(parseInt(req.params.id)));
+        res.json(await store.show(req.body.id));
     } catch (error) {
         res.status(400);
         res.json(error);
@@ -66,7 +67,7 @@ const productRoutes = (app: Application): void => {
     app.post('/products', verifyAuthToken, create);
     app.put('/products/:id', verifyAuthToken, update);
     app.delete('/products/:id', verifyAuthToken, remove);
-}
+};
 
 export default productRoutes;
 

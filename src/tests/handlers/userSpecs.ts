@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import app from '../../server';
-import { User, UserStore } from '../../models/user';
+import { User } from '../../models/user';
 
 const request = supertest(app);
 

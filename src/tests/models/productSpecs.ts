@@ -2,7 +2,7 @@ import { ProductStore } from '../../models/product';
 
 const store = new ProductStore();
 
-xdescribe('Product model', () => {
+describe('Product model', () => {
     it('should have an index method', () => {
         expect(store.index).toBeDefined();
     });
