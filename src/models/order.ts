@@ -58,7 +58,7 @@ export class OrderStore {
   async addProduct(addedProduct: OrderProduct): Promise<OrderProduct> {
     try {
       const conn = await client.connect();
-      const sql = 'INSERT INTO order_products (order_id, producst_id, quantity) VALUES ($1, $2, $3) RETURNING *';
+      const sql = 'INSERT INTO order_products (order_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *';
       const result = await conn.query(sql, [addedProduct.order_id, addedProduct.product_id, addedProduct.quantity]);
       conn.release();
 
@@ -93,7 +93,7 @@ export class OrderStore {
   }
 
 
-  async getCurrentOrderByUserId(id: string): Promise<Order> {
+  async getCurrentOrderByUserId(user_id: string): Promise<Order> {
     try {
       const conn = await client.connect();
       const sql = `
@@ -103,12 +103,12 @@ export class OrderStore {
         ORDER BY id
         DESC LIMIT 1
         `;
-      const result = await conn.query(sql, [id]);
+      const result = await conn.query(sql, [user_id]);
       conn.release();
 
       return result.rows[0];
     } catch (error) {
-      throw new Error(`No current orders for user: ${id}. Error ${error}`);
+      throw new Error(`No current orders for user: ${user_id}. Error ${error}`);
     }
   }
 

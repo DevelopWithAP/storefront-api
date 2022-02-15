@@ -41,10 +41,6 @@ describe('Testing /products endpoint', () => {
         const testProduct: Product = await productStore.create(products[0]);
     });
 
-    afterAll(async () => {
-
-    })
-
     it('POST to /products should respond with 200 OK', async () => {
         token = `Bearer ${token}`;
         const response = await request.post('/products')
@@ -57,40 +53,35 @@ describe('Testing /products endpoint', () => {
             name: products[0].name,
             price: products[0].price
         });
-        console.log('Response body: ', JSON.stringify(response.body));
     });
 
     it('GET to products should respond with 200 OK', async () => {
         const response = await request.get('/products');
         expect(response.statusCode).toEqual(200);
-
-        console.log(Object.values(response.body));
     });
 
     it('GET to products/1 should respond with 200 OK', async () => {
         const response = await request.get('/products/1');
         expect(response.status).toEqual(200);
-
-        console.log(Object.values(response.body));
     });
 
-    it('PUT to /products/1 should return 200 OK', async () => {
-        const response = await request.put('/products/1')
+    it('PUT to /products/20 should return 200 OK', async () => {
+        const response = await request.put('/products/20')
         .send({
-            id: 1, 
+            id: 20, 
             name: 'Updated Product 1',
             price: 5
         })
         .set('Authorization', token);
         expect(response.statusCode).toEqual(200);
         expect(response.body).toEqual({
-            id: 1,
+            id: 20,
             name: 'Updated Product 1',
             price: 5
         });
     });
 
-    it('DELETE to /products/1 shoud respond with 200 OK', async () => {
+    it('DELETE to /products/1 should respond with 200 OK', async () => {
         const response = await request.delete('/products/1')
         .set('Authorization', token);
         expect(response.statusCode).toBe(200);
