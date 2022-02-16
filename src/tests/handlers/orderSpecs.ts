@@ -11,12 +11,12 @@ const oStore = new OrderStore();
 
 let token: string;
 
-describe('Testing /orders endpoint', () => {
+xdescribe('Testing /orders endpoint', () => {
     beforeAll(async () => {
         const testUser: User = {
             id: 2,
-            firstName: 'Store',
-            lastName: 'Dev0',
+            first_name: 'Store',
+            last_name: 'Dev0',
             password: 'testing123'
         };
 

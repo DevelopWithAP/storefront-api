@@ -96,12 +96,12 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 
 
 const orderRoutes = (app: Application): void => {
-    app.get('/orders', index);
-    app.get('/orders/:id', show);
+    app.get('/orders', verifyAuthToken, index);
+    app.get('/orders/:id', verifyAuthToken, show);
     app.get('/orders/current/:user_id', verifyAuthToken, getCurrentOrderByUserId),
     app.get('/orders/completed/:user_id', verifyAuthToken, getCompletedOrdersByUSerId),
-    app.post('/orders', create);
-    app.post('/orders/:id/products', addProduct);
+    app.post('/orders', verifyAuthToken, create);
+    app.post('/orders/:id/products', verifyAuthToken, addProduct);
     app.put('/orders/:id', verifyAuthToken, update);
     app.delete('/orders/:id', verifyAuthToken, remove);
 }

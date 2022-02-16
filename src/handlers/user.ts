@@ -27,8 +27,8 @@ const show = async (req: Request, res: Response): Promise<void> => {
 
 const create = async (_req: Request, res: Response): Promise<void> => {
     const user: User = {
-        firstName: 'Store',
-        lastName: 'Dev',
+        first_name: 'Store',
+        last_name: 'Dev',
         password: 'testing123'
     };
     try {
@@ -45,8 +45,8 @@ const create = async (_req: Request, res: Response): Promise<void> => {
 
 const update = async (req: Request, res: Response): Promise<void> => {
     const user: User = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         password: req.body.password
     };
     try {
@@ -69,12 +69,12 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 
 const authenticate = async (req: Request, res: Response): Promise<void> => {
     const user: User = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         password: req.body.password
     };
     try {
-        const loggedIn: User | null = await store.authenticate(user.firstName, user.lastName, user.password);
+        const loggedIn: User | null = await store.authenticate(user.first_name, user.last_name, user.password);
         if (loggedIn && secret) {
             token = jwt.sign({user: loggedIn}, secret);
             res.json(token);

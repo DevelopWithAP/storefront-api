@@ -6,8 +6,8 @@ const bcryptPassword: string = process.env["BCRYPT_PASSWORD"] as string;
 
 export type User = {
     id?: number;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     password: string;
 }
 
@@ -41,19 +41,19 @@ export class UserStore {
             const conn = await client.connect();
             const sql = 'INSERT INTO users (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *';
             const hash = bcrypt.hashSync(user.password + bcryptPassword, parseInt(saltRounds));
-            const result = await conn.query(sql, [user.firstName, user.lastName, hash]);
+            const result = await conn.query(sql, [user.first_name, user.last_name, hash]);
             conn.release();
             return result.rows[0];
         } catch (error) {
-            throw new Error(`Unable to create new user ${user.firstName}. Error: ${error}`);
+            throw new Error(`Unable to create new user ${user.first_name}. Error: ${error}`);
         }
     }
 
     async update(id: string, user: User): Promise<User> {
         try {
             const conn = await client.connect();
-            const sql = 'UPDATE users SET first_name = $1, last_name = ($2), password = ($3) WHERE id=($4) RETURNING *';
-            const result = await conn.query(sql, [user.firstName, user.lastName, user.password, id]);
+            const sql = 'UPDATE users SET first_name = ($1), last_name = ($2), password = ($3) WHERE id=($4) RETURNING *';
+            const result = await conn.query(sql, [user.first_name, user.last_name, user.password, id]);
             conn.release();
             return result.rows[0];
         } catch (error) {
@@ -73,16 +73,16 @@ export class UserStore {
         }
     }
 
-    async authenticate(firstName: string, lastName: string, password: string): Promise<User | null> {
+    async authenticate(first_name: string, last_name: string, password: string): Promise<User | null> {
         try {
           const conn = await client.connect();
           const sql =
             "SELECT * FROM users WHERE first_name=($1) AND last_name=($2)";
-          const result = await conn.query(sql, [firstName, lastName]);
+          const result = await conn.query(sql, [first_name, last_name]);
     
           if (result.rows.length) {
             const user = result.rows[0];
-    
+            
             if (bcrypt.compareSync(password + bcryptPassword, user.password)) {
               return user;
             }
@@ -90,8 +90,9 @@ export class UserStore {
     
           return null;
         } catch (err) {
-          throw new Error(`Cannot authenticate user ${lastName}, ${firstName}. Error: ${err}.`);
+          throw new Error(`Cannot authenticate user ${last_name}, ${first_name}. Error: ${err}.`);
         }
       }
 }
-    
+
+
