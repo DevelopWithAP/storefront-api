@@ -10,7 +10,7 @@ beforeAll(async () => {
     };
 });
 
-describe('User model', ()=> {
+xdescribe('User model', ()=> {
 
     it('should have an index method', ()=> {
         expect(store.index).toBeDefined();

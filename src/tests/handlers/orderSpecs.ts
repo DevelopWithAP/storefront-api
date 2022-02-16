@@ -11,7 +11,7 @@ const oStore = new OrderStore();
 
 let token: string;
 
-xdescribe('Testing /orders endpoint', () => {
+describe('Testing /orders endpoint', () => {
     beforeAll(async () => {
         const testUser: User = {
             id: 2,

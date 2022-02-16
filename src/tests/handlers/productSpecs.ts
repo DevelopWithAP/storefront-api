@@ -58,6 +58,8 @@ xdescribe('Testing /products endpoint', () => {
     it('GET to products should respond with 200 OK', async () => {
         const response = await request.get('/products');
         expect(response.statusCode).toEqual(200);
+
+        console.log(Object.values(response.body));
     });
 
     it('GET to products/1 should respond with 200 OK', async () => {
@@ -65,17 +67,17 @@ xdescribe('Testing /products endpoint', () => {
         expect(response.status).toEqual(200);
     });
 
-    it('PUT to /products/20 should return 200 OK', async () => {
-        const response = await request.put('/products/20')
+    it('PUT to /products/10 should return 200 OK', async () => {
+        const response = await request.put('/products/10')
         .send({
-            id: 20, 
+            id: 10, 
             name: 'Updated Product 1',
             price: 5
         })
         .set('Authorization', token);
         expect(response.statusCode).toEqual(200);
         expect(response.body).toEqual({
-            id: 20,
+            id: 10,
             name: 'Updated Product 1',
             price: 5
         });
