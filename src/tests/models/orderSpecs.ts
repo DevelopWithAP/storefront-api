@@ -13,7 +13,7 @@ beforeAll(async () => {
     await store.create(order);
 })
 
-xdescribe('Order model', ()=> {
+describe('Order model', ()=> {
     it('should have an index method', ()=> {
         expect(store.index).toBeDefined();
     });

@@ -11,7 +11,7 @@ beforeAll(async () => {
     await store.create(product);
 })
 
-xdescribe('Product model', () => {
+describe('Product model', () => {
     it('should have an index method', () => {
         expect(store.index).toBeDefined();
     });

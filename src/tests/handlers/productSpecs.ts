@@ -23,7 +23,7 @@ const products: Product[] = [
 
 let token: string;
 
-xdescribe('Testing /products endpoint', () => {
+describe('Testing /products endpoint', () => {
     beforeAll(async () => {
         const user: User = {
             first_name: 'Store',
