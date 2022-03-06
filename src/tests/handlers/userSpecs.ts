@@ -17,7 +17,7 @@ const users: User[] = [
     },
 ];
 
-describe('Testing /user endpoints', () => {
+xdescribe('Testing /user endpoints', () => {
     let token: string;
 
     it ('POST to /users should respond with 200 OK', async () => {
