@@ -29,12 +29,12 @@ let orderProduct: OrderProduct = {
     quantity: 3
 };
 
-beforeEach(async () => {
-    await userStore.create(user);
+// beforeEach(async () => {
+//     await userStore.create(user);
 
-    await store.create(order0);
-    await store.create(order1);
-});
+//     await store.create(order0);
+//     await store.create(order1);
+// });
 
 xdescribe('Order model', () => {
     it('should have a create method', () => {

@@ -11,6 +11,6 @@ const oStore = new OrderStore();
 
 let token: string;
 
-describe('Testing /orders endpoint', () => {
+xdescribe('Testing /orders endpoint', () => {
 
 })
