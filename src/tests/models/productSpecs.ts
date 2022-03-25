@@ -2,66 +2,91 @@ import { Product, ProductStore } from '../../models/product';
 
 const store = new ProductStore();
 
-let product: Product = {
-    name: 'Product_1',
-    price: 10
-};
+describe('Product model', () => {
 
-xdescribe('Product model', () => {
-    it('should have a create method', () => {
-        expect(store.create).toBeDefined();
-    });
+    const product: Product = {
+        name: 'Product_0',
+        price: 9.99
+    };
 
-    it('create method should createa new product', async () => {
-        const result = await store.create(product);
+    const createProduct = async (p: Product) => {
+        return store.create(p);
+    };
 
-        expect(result.name).toEqual(product.name);
-        expect(result.price).toEqual(product.price);
-    });
+    const deleteProduct = async (id: number) => {
+        return store.remove(id);
+    };
 
     it('should have an index method', () => {
-        expect(store.index).toBeDefined();
-    });
-
-    it('index method should return a non-empty list of Product objects', async () => {
-        const result = await store.index();
-
-        expect(result.length).toBeGreaterThan(0);
+        expect(store.index).toBeTruthy();
     });
 
     it('should have a show method', () => {
-        expect(store.show).toBeDefined();
+        expect(store.show).toBeTruthy();
     });
 
-    it('show method should retrieve the correct product', async () => {
-        const result = await store.show(92);
-
-        expect(result.id).toEqual(92);
-        expect(result.name).toEqual('Product_1');
+    it('should have a create method', () => {
+        expect(store.create).toBeTruthy();
+    });
+    
+    it('should have a remove method', () => {
+        expect(store.remove).toBeTruthy();
     });
 
     it('should have an update method', () => {
-        expect(store.update).toBeDefined();
+        expect(store.update).toBeTruthy();
     });
 
-    it('update method should should correctly update product information', async () => {
-        const result = await store.update({
-            id: 92,
-            name: 'Product_1',
-            price: 11
-        });
-        expect(result.price).toEqual(11);
+    it('create method should add a new product', async () => {
+        const newProduct: Product = await createProduct(product);
+
+        const response = newProduct;
+
+        expect(response.name).toBe(newProduct.name);
+        expect(response.price).toBe(newProduct.price);
+
+        await deleteProduct(Number(newProduct.id));
     });
 
-    it('should have a delete method', () => {
-        expect(store.remove).toBeDefined();
+    it('index method should return a list of products', async () => {
+        const response = await store.index();
+
+        expect(response.length).toBeGreaterThan(0);
+    });
+
+    it('show method should retrieve the correct product', async () => {
+        const prod: Product = await createProduct(product);
+
+        const response = await store.show(Number(prod.id));
+
+        expect(response.name).toEqual(prod.name);
+        expect(response.price).toEqual(prod.price);
+
+        await deleteProduct(Number(prod.id));
+    });
+
+    it('update method should correctly update product information', async () => {
+        const prodToUpdate: Product = await createProduct(product);
+        const updateDetails: Product = {
+            id: prodToUpdate.id,
+            name: 'New_Product_0',
+            price: 10.99
+        };
+
+        const response = await store.update(updateDetails);
+
+        expect(response.name).toEqual(updateDetails.name);
+        expect(response.price).toEqual(updateDetails.price);
+
+        await deleteProduct(Number(prodToUpdate.id));
     });
 
     it('delete method should remove the correct product', async () => {
-        const result = await store.remove(93);
+        const prodToRemove: Product = await createProduct(product);
 
-        expect(result.id).toEqual(93);
+        const response = await store.remove(Number(prodToRemove.id));
 
-        console.log(`Call to delete/93 returns: ${result.id}`);
+        expect(response.name).toEqual(prodToRemove.name);
+        expect(response.price).toEqual(prodToRemove.price);
     });
 })

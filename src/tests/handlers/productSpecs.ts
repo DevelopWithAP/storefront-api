@@ -22,8 +22,7 @@ const products: Product[] = [
 ];
 
 let token: string;
-
-xdescribe('Testing /products endpoint', () => {
+describe('Testing /products endpoint', () => {
     beforeAll(async () => {
         const user: User = {
             first_name: 'Store',
@@ -65,17 +64,17 @@ xdescribe('Testing /products endpoint', () => {
         expect(response.status).toEqual(200);
     });
 
-    it('PUT to /products/104 should return 200 OK', async () => {
-        const response = await request.put('/products/104')
+    it('PUT to /products/1 should return 200 OK', async () => {
+        const response = await request.put('/products/1')
         .send({
-            id: 104, 
+            id: 1, 
             name: 'Updated Product 1',
             price: 5
         })
         .set('Authorization', token);
         expect(response.statusCode).toEqual(200);
         expect(response.body).toEqual({
-            id: 104,
+            id: 1,
             name: 'Updated Product 1',
             price: 5
         });
