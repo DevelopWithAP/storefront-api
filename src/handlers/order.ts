@@ -1,7 +1,6 @@
 import { Request, Response, Application } from 'express';
 import verifyAuthToken from '../middleware/verifyAuthToken';
 import { Order, OrderStore, OrderProduct, OrderStatus } from '../models/order';
-import { User } from '../models/user';
 
 const store = new OrderStore();
 
