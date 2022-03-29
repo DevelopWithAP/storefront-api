@@ -83,12 +83,26 @@ export class OrderStore {
   async remove(id: number): Promise<Order> {
     try {
       const conn = await client.connect();
-      const sql = 'DELETE FROM orders WHERE id=($1)';
+      const sql = 'DELETE FROM orders WHERE id=($1) RETURNING *';
       const result = await conn.query(sql, [id]);
       conn.release();
       return result.rows[0];
     } catch (err) {
       throw new Error(`Could not delete order ${id}. Error: ${err}`);
+    }
+  }
+
+  /** Test method: Clears database */
+  async removeAll(): Promise<Order[]> {
+    try {
+      const conn = await client.connect();
+      const sql = 'DELETE FROM orders';
+      const result = await conn.query(sql);
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Could not clear orders table. ${err}`);
     }
   }
 
@@ -100,10 +114,11 @@ export class OrderStore {
         SELECT *
         FROM orders
         WHERE user_id=($1)
+        AND status=($2)
         ORDER BY id
         DESC LIMIT 1
         `;
-      const result = await conn.query(sql, [user_id]);
+      const result = await conn.query(sql, [user_id, OrderStatus.PENDING]);
       conn.release();
 
       return result.rows[0];
@@ -112,7 +127,7 @@ export class OrderStore {
     }
   }
 
-  async getCompletedOrdersByUserId(id: string): Promise<Order[]> {
+  async getCompletedOrdersByUserId(user_id: string): Promise<Order[]> {
     try {
       const conn = await client.connect();
       const sql = `
@@ -121,12 +136,12 @@ export class OrderStore {
       WHERE user_id=($1)
       AND status=($2)
       `;
-      const result = await conn.query(sql, [id, OrderStatus.COMPLETE]);
+      const result = await conn.query(sql, [user_id, OrderStatus.COMPLETE]);
       conn.release();
 
       return result.rows;
     } catch (error) {
-      throw new Error(`No completed orders for user: ${id}. Error: ${error}`);
+      throw new Error(`No completed orders for user: ${user_id}. Error: ${error}`);
     }
   }
 }

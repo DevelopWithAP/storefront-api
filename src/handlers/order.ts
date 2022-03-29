@@ -93,7 +93,6 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 }
 
 
-
 const orderRoutes = (app: Application): void => {
     app.get('/orders', verifyAuthToken, index);
     app.get('/orders/:id', verifyAuthToken, show);
