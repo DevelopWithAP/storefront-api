@@ -45,7 +45,6 @@ describe('Testing /products endpoint', () => {
         const response = await request.post('/products')
         .send(products[0])
         .set('Authorization', token);
-        console.log(token);
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
             id: response.body.id,

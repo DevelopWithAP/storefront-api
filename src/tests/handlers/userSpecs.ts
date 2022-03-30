@@ -27,7 +27,6 @@ describe('Testing /user endpoints', () => {
 
         token = response.body;
 
-        console.log('Token: ', token);
     });
 
     it ('POST to /users/login should respond with 200 OK', async () => {
