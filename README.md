@@ -1,54 +1,129 @@
 # Storefront Backend Project
 
-## Getting Started
+## Aim
+The aim of this project was to create a RESTful API back-end for an imaginary store.
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+## Technologies
+* ``TypeScript`` to reduce type errors.
+* ``Postgres`` for the database.
+* ``Node.js`` as a runtime environment.
+* ``Express`` for the application routing.
+* ``bcrypt`` for password security.
+* ``dotenv`` from npm for managing environment variables.
+* ``db-migrate`` from npm for migrations.
+* ``jsonwebtoken`` from npm for working with JWTs.
+* ``jasmine`` and ``supertest`` from npm for testing.
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+### Functionality
+The application supports the following actions:
+* User registration and authentication
+* CRUD operations for Products and Orders
+* Ability to add products to specific orders. 
 
-## Steps to Completion
+### RESTful routes:
+#### Users:
+* ``GET /users`` returns all registered users (authentication required).
+* ``GET /users/:id`` returns the user with the specified id (authentication required).
+* ``POST /users`` creates a new user.
+* ``PUT /users/:id`` updates user details (authentication required).
+* ``DELETE /users/:id`` deletes the user with the specified id from the database.
 
-### 1. Plan to Meet Requirements
+#### Products:
+* ``GET /products`` returns all the avalable products.
+* ``GET /products/:id`` returns the products with the specified id.
+* ``POST /products`` creates a new product.
+* ``PUT /products/:id`` updates product details (authentication required).
+* ``DELETE /products/:id`` deletes the product from the database (authentication required).
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
+#### Orders:
+N.B: Authentication required for ALL of the following routes
+* ``GET /orders`` returns all orders.
+* ``GET /orders/:id`` returns the order with the specified id.
+* ``GET /orders/current/:user_id`` returns the current order for the user of id ``user_id``.
+* ``GET /orders/completed/:user_id`` returns the completed orders for the user of id ``user_id``.
+* ``POST /orders`` creates a new order.
+* ``POST /orders/:id/products`` adds a new product to the current order.
+* ``PUT /orders/:id`` updates the current order.
+* ``DELETE /orders/:id`` deletes the current order.
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+## Database Schema
+### Users table:
+#### Contains user information
+| Column | Type | 
+|--------|------|
+| id     | integer|
+| first_name | string (64) |
+| last_name | string (64) |
+| password | string (varying) |
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+### Products table:
+#### Contains product information
+| Column | Type | 
+|--------|------|
+| id | integer|
+| name | string (64) |
+| price | float |
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+### Orders table:
+#### Contains order information
+| Column | Type | 
+|--------|------|
+| id | integer |
+| user_id | integer | 
+| status | string (varying) | 
 
-### 2.  DB Creation and Migrations
+### Order-products table:
+#### Intermediary table that represents the product quantities via product id in the order and does not directly correspond to any models.
+| Column | Type |
+|--------|------|
+| id | integer |
+| order_id | integer | 
+| product_id | integer |
+| quantity | integer |
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
 
-### 3. Models
+## Dependencies
+A list of the project's dependencies may be found in the ```package.json``` file.
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+## Installation
+* Insall the dependencies required by running ```npm install``` or ```yarn```.
+* Setup postgres image inside docker container
+* Start docker container using ``docker-compose.yml`` which contains information related to postgres image sudo ``docker-compose up``
+* In a bash terminal within the docker container execute ``sudo docker exec -i -t <docker_container_name> bash``
+* Login to the Postgres server running on port 5432 (default) by executing ```psql -U <postgres_user>```
+* Create database for development and testing by executing ```CREATE DATABASE store;``` and ```CREATE DATABASE store_test;``` respectively.
+* Create a new database user and grant the user access to the database.
+* Connect to the database by executing ```\c <database_name> <database_user>;```.
+* Execute ``\dt`` to display the tables.
+  N.B.: Until migrations are run the output should be ```No relations found```.
+* Please refer to Postgres documentation if in doubt.
 
-### 4. Express Handlers
+### Environment variables
+```
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5432
+POSTGRES_DB=store
+POSTGRES_TEST_DB=store_test
+POSTGRES_USER=store_dev
+POSTGRES_PASSWORD=''
+POSTGRES_PASSWORD_TEST=''
+ENV=dev
+BCRYPT_PASSWORD=''
+SALT_ROUNDS=10
+TOKEN_SECRET=''
+```
+The ```''``` signify the parameters to be set.
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
+### Migrations 
+The ``db-migrate up`` run thedatabase migrations.
 
-### 5. JWTs
+### Serving the application
+* ``yarn build`` or ``npm run build`` will produce the build directory.
+* ``yarn start`` or ```npm run start``` will start the development server.
+* ```yarn watch``` or ```npm run watch``` will start the production server.
+* The application should be running on port 3000.
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
-
-### 6. QA and `README.md`
-
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
-
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+### Testing
+To test the application execute the following command:
+* ``yarn test`` or ``npm run test``.
